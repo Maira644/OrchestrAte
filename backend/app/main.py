@@ -1,5 +1,7 @@
 from fastapi import FastAPI
+
 from app.api.routes import router
+from app.api.menu import router as menu_router
 
 app = FastAPI(
     title="OrchestrAte API",
@@ -8,3 +10,4 @@ app = FastAPI(
 )
 
 app.include_router(router)
+app.include_router(menu_router)
