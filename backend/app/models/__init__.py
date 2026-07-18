@@ -1,1 +1,2 @@
-from app.models.menu_item import MenuItem
+from .menu_item import MenuItem
+from .inventory import Inventory

@@ -1,7 +1,7 @@
 from app.database.database import Base, engine
 
-# Import all models here
-from app.models import MenuItem
+# Import all models
+from app.models import MenuItem, Inventory
 
 Base.metadata.create_all(bind=engine)
 
