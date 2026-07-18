@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from app.database.database import get_db
@@ -27,9 +27,21 @@ def create_menu(
 
 @router.get("/", response_model=list[MenuItemResponse])
 def get_menu(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(10, ge=1, le=100),
+    search: str = Query(""),
+    category: str = Query(""),
+    sort_by: str = Query(""),
     db: Session = Depends(get_db)
 ):
-    return get_all_menu_items(db)
+    return get_all_menu_items(
+        db,
+        skip,
+        limit,
+        search,
+        category,
+        sort_by
+    )
 
 
 @router.get("/{menu_id}", response_model=MenuItemResponse)

@@ -21,8 +21,29 @@ def create_menu_item(db: Session, menu_item: MenuItemCreate):
     return db_menu_item
 
 
-def get_all_menu_items(db: Session):
-    return db.query(MenuItem).all()
+def get_all_menu_items(
+    db: Session,
+    skip: int = 0,
+    limit: int = 10,
+    search: str = "",
+    category: str = "",
+    sort_by: str = ""
+):
+    query = db.query(MenuItem)
+
+    if search:
+        query = query.filter(MenuItem.name.ilike(f"%{search}%"))
+
+    if category:
+        query = query.filter(MenuItem.category.ilike(category))
+
+    if sort_by == "price":
+        query = query.order_by(MenuItem.price)
+
+    elif sort_by == "name":
+        query = query.order_by(MenuItem.name)
+
+    return query.offset(skip).limit(limit).all()
 
 def get_menu_item_by_id(db: Session, menu_id: int):
     return db.query(MenuItem).filter(MenuItem.id == menu_id).first()
