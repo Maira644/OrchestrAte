@@ -5,6 +5,7 @@ from app.models.order_item import OrderItem
 from app.models.menu_item import MenuItem
 from app.models.inventory import Inventory
 from app.schemas.order import OrderCreate
+from app.models.kitchen_ticket import KitchenTicket
 
 
 def create_order(db: Session, order: OrderCreate):
@@ -55,6 +56,15 @@ def create_order(db: Session, order: OrderCreate):
                 menu_item.available = False
 
     db_order.total_price = total_price
+
+    kitchen_ticket = KitchenTicket(
+        order_id=db_order.id,
+        status="Pending",
+        priority=1,
+        estimated_time=15
+    )
+
+    db.add(kitchen_ticket)
 
     db.commit()
     db.refresh(db_order)
